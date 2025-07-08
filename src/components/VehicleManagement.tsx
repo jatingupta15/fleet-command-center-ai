@@ -18,66 +18,86 @@ export const VehicleManagement = () => {
   const vehicles = [
     {
       id: 1,
-      number: 'KA-01-HH-1234',
-      type: 'Sedan',
-      model: 'Honda City',
+      etsVehicleId: 'ETS001',
+      registrationNumber: 'KA-01-HH-1234',
+      manufacturingDate: '2020-03-15',
+      inductionDate: '2020-04-10',
+      registrationDate: '2020-04-12',
+      insuranceExpiryDate: '2024-12-31',
+      roadTaxExpiryDate: '2024-11-30',
+      pollutionCertificateExpiryDate: '2024-10-15',
+      commercialPermitExpiryDate: '2024-09-20',
+      fitnessExpiryDate: '2025-03-15',
+      vehicleServiceExpiryDate: '2024-07-30',
+      ehs: 'Compliant',
+      vehicleType: 'Petrol',
+      vehicleOwnership: 'Company Owned',
+      permitType: 'Commercial',
       status: 'Available',
-      driver: 'Rajesh Kumar',
-      location: 'Koramangala, Bangalore',
-      lastService: '2024-01-15',
-      nextService: '2024-04-15',
-      mileage: 15.2,
-      totalDistance: 45670,
-      fuel: 85,
     },
     {
       id: 2,
-      number: 'KA-01-HH-5678',
-      type: 'SUV',
-      model: 'Toyota Innova',
+      etsVehicleId: 'ETS002',
+      registrationNumber: 'KA-01-HH-5678',
+      manufacturingDate: '2019-08-22',
+      inductionDate: '2019-09-15',
+      registrationDate: '2019-09-18',
+      insuranceExpiryDate: '2024-08-31',
+      roadTaxExpiryDate: '2024-12-15',
+      pollutionCertificateExpiryDate: '2024-11-10',
+      commercialPermitExpiryDate: '2024-10-05',
+      fitnessExpiryDate: '2024-08-22',
+      vehicleServiceExpiryDate: '2024-08-15',
+      ehs: 'Compliant',
+      vehicleType: 'Diesel',
+      vehicleOwnership: 'Vendor Owned',
+      permitType: 'Commercial',
       status: 'In Use',
-      driver: 'Amit Sharma',
-      location: 'Whitefield, Bangalore',
-      lastService: '2024-01-10',
-      nextService: '2024-04-10',
-      mileage: 12.8,
-      totalDistance: 62340,
-      fuel: 45,
     },
     {
       id: 3,
-      number: 'KA-01-HH-9012',
-      type: 'Premium',
-      model: 'BMW 3 Series',
+      etsVehicleId: 'ETS003',
+      registrationNumber: 'KA-01-HH-9012',
+      manufacturingDate: '2021-01-10',
+      inductionDate: '2021-02-05',
+      registrationDate: '2021-02-08',
+      insuranceExpiryDate: '2025-01-31',
+      roadTaxExpiryDate: '2025-01-10',
+      pollutionCertificateExpiryDate: '2024-12-25',
+      commercialPermitExpiryDate: '2024-11-15',
+      fitnessExpiryDate: '2026-01-10',
+      vehicleServiceExpiryDate: '2024-08-10',
+      ehs: 'Non-Compliant',
+      vehicleType: 'CNG',
+      vehicleOwnership: 'Company Owned',
+      permitType: 'Private',
       status: 'Maintenance',
-      driver: 'Unassigned',
-      location: 'Service Center',
-      lastService: '2024-01-20',
-      nextService: '2024-04-20',
-      mileage: 10.5,
-      totalDistance: 38950,
-      fuel: 20,
     },
     {
       id: 4,
-      number: 'KA-01-HH-3456',
-      type: 'Sedan',
-      model: 'Maruti Dzire',
+      etsVehicleId: 'ETS004',
+      registrationNumber: 'KA-01-HH-3456',
+      manufacturingDate: '2018-12-05',
+      inductionDate: '2019-01-12',
+      registrationDate: '2019-01-15',
+      insuranceExpiryDate: '2024-12-05',
+      roadTaxExpiryDate: '2024-12-31',
+      pollutionCertificateExpiryDate: '2024-09-30',
+      commercialPermitExpiryDate: '2024-08-25',
+      fitnessExpiryDate: '2024-12-05',
+      vehicleServiceExpiryDate: '2024-09-10',
+      ehs: 'Compliant',
+      vehicleType: 'Petrol',
+      vehicleOwnership: 'Vendor Owned',
+      permitType: 'Commercial',
       status: 'Available',
-      driver: 'Priya Singh',
-      location: 'Electronic City, Bangalore',
-      lastService: '2024-01-05',
-      nextService: '2024-04-05',
-      mileage: 18.5,
-      totalDistance: 28745,
-      fuel: 70,
     },
   ];
 
   const filteredVehicles = vehicles.filter(vehicle => {
-    const matchesSearch = vehicle.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         vehicle.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         vehicle.driver.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = vehicle.registrationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         vehicle.etsVehicleId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         vehicle.vehicleType.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || vehicle.status.toLowerCase() === statusFilter.toLowerCase();
     return matchesSearch && matchesStatus;
   });
@@ -178,7 +198,7 @@ export const VehicleManagement = () => {
       {/* Search and Filters */}
       <div className="flex items-center space-x-4">
         <Input
-          placeholder="Search vehicles, model, or driver..."
+          placeholder="Search by ETS ID, Registration Number, or Vehicle Type..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
@@ -193,8 +213,6 @@ export const VehicleManagement = () => {
           <option value="in use">In Use</option>
           <option value="maintenance">Maintenance</option>
         </select>
-        <Button variant="outline">Filter by Type</Button>
-        <Button variant="outline">Maintenance Schedule</Button>
       </div>
 
       {/* Vehicle List */}
@@ -202,15 +220,15 @@ export const VehicleManagement = () => {
         {filteredVehicles.map((vehicle) => (
           <Card key={vehicle.id} className="hover:shadow-md transition-shadow">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     <Settings className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{vehicle.number}</h3>
-                    <p className="text-sm text-gray-600">{vehicle.type} • {vehicle.model}</p>
-                    <p className="text-sm text-gray-600">Driver: {vehicle.driver}</p>
+                    <h3 className="text-lg font-semibold text-gray-900">{vehicle.etsVehicleId}</h3>
+                    <p className="text-sm text-gray-600">{vehicle.registrationNumber}</p>
+                    <p className="text-sm text-gray-600">{vehicle.vehicleType} • {vehicle.vehicleOwnership}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -218,50 +236,52 @@ export const VehicleManagement = () => {
                     {getStatusIcon(vehicle.status)}
                     <span>{vehicle.status}</span>
                   </span>
-                  <Button variant="outline" size="sm">
-                    <Settings className="h-4 w-4" />
-                  </Button>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${vehicle.ehs === 'Compliant' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    EHS: {vehicle.ehs}
+                  </span>
                 </div>
               </div>
               
-              <div className="mt-4 grid grid-cols-2 md:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-sm">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Location</p>
-                  <p className="text-sm text-gray-900">{vehicle.location}</p>
+                  <p className="font-medium text-gray-600">Manufacturing Date</p>
+                  <p className="text-gray-900">{vehicle.manufacturingDate}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Fuel Level</p>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-12 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full ${vehicle.fuel > 50 ? 'bg-green-500' : vehicle.fuel > 25 ? 'bg-yellow-500' : 'bg-red-500'}`}
-                        style={{ width: `${vehicle.fuel}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-sm text-gray-900">{vehicle.fuel}%</span>
-                  </div>
+                  <p className="font-medium text-gray-600">Induction Date</p>
+                  <p className="text-gray-900">{vehicle.inductionDate}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Mileage</p>
-                  <p className="text-sm font-medium text-gray-900">{vehicle.mileage} km/l</p>
+                  <p className="font-medium text-gray-600">Registration Date</p>
+                  <p className="text-gray-900">{vehicle.registrationDate}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Distance</p>
-                  <p className="text-sm font-medium text-gray-900">{vehicle.totalDistance.toLocaleString()} km</p>
+                  <p className="font-medium text-gray-600">Insurance Expiry</p>
+                  <p className="text-gray-900">{vehicle.insuranceExpiryDate}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Next Service</p>
-                  <p className="text-sm font-medium text-gray-900">{vehicle.nextService}</p>
+                  <p className="font-medium text-gray-600">Road Tax Expiry</p>
+                  <p className="text-gray-900">{vehicle.roadTaxExpiryDate}</p>
                 </div>
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="sm">
-                    View Details
-                  </Button>
-                  {vehicle.status === 'Available' && (
-                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                      Assign Driver
-                    </Button>
-                  )}
+                <div>
+                  <p className="font-medium text-gray-600">Pollution Certificate</p>
+                  <p className="text-gray-900">{vehicle.pollutionCertificateExpiryDate}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-600">Commercial Permit</p>
+                  <p className="text-gray-900">{vehicle.commercialPermitExpiryDate}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-600">Fitness Expiry</p>
+                  <p className="text-gray-900">{vehicle.fitnessExpiryDate}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-600">Service Expiry</p>
+                  <p className="text-gray-900">{vehicle.vehicleServiceExpiryDate}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-600">Permit Type</p>
+                  <p className="text-gray-900">{vehicle.permitType}</p>
                 </div>
               </div>
             </CardContent>
