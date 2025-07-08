@@ -3,6 +3,16 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useForm } from 'react-hook-form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { 
   Table,
   TableBody,
@@ -44,6 +54,19 @@ export const VehicleManagement = () => {
   const [fuelTypeFilter, setFuelTypeFilter] = useState('all');
   const [ownershipFilter, setOwnershipFilter] = useState('all');
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [editingVehicle, setEditingVehicle] = useState(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  
+  const form = useForm({
+    defaultValues: {
+      insuranceExpiryDate: '',
+      roadTaxExpiryDate: '',
+      pollutionCertificateExpiryDate: '',
+      commercialPermitExpiryDate: '',
+      fitnessExpiryDate: '',
+      vehicleServiceExpiryDate: '',
+    }
+  });
 
   const vehicles = [
     {
@@ -169,9 +192,29 @@ export const VehicleManagement = () => {
     setSelectedVehicle(vehicle);
   };
 
-  const handleEdit = (vehicleId: number) => {
-    console.log('Edit vehicle:', vehicleId);
-    // Add edit functionality here
+  const handleEdit = (vehicle: any) => {
+    setEditingVehicle(vehicle);
+    form.reset({
+      insuranceExpiryDate: vehicle.insuranceExpiryDate,
+      roadTaxExpiryDate: vehicle.roadTaxExpiryDate,
+      pollutionCertificateExpiryDate: vehicle.pollutionCertificateExpiryDate,
+      commercialPermitExpiryDate: vehicle.commercialPermitExpiryDate,
+      fitnessExpiryDate: vehicle.fitnessExpiryDate,
+      vehicleServiceExpiryDate: vehicle.vehicleServiceExpiryDate,
+    });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleEditSubmit = (data: any) => {
+    console.log('Updating vehicle:', editingVehicle?.id, data);
+    // Update vehicle data here
+    setIsEditDialogOpen(false);
+    setEditingVehicle(null);
+  };
+
+  const handleDeactivate = (vehicleId: number) => {
+    console.log('Deactivate vehicle:', vehicleId);
+    // Add deactivate functionality here
   };
 
   const handleDelete = (vehicleId: number) => {
@@ -350,35 +393,52 @@ export const VehicleManagement = () => {
                           <DialogHeader>
                             <DialogTitle>Vehicle Details - {selectedVehicle?.etsVehicleId}</DialogTitle>
                           </DialogHeader>
-                          {selectedVehicle && (
-                            <div className="grid grid-cols-2 gap-4">
-                              <div>
-                                <h4 className="font-semibold mb-2">Basic Information</h4>
-                                <div className="space-y-2 text-sm">
-                                  <div><span className="font-medium">ETS Vehicle ID:</span> {selectedVehicle.etsVehicleId}</div>
-                                  <div><span className="font-medium">Registration Number:</span> {selectedVehicle.registrationNumber}</div>
-                                  <div><span className="font-medium">Vehicle Type:</span> {selectedVehicle.vehicleType}</div>
-                                  <div><span className="font-medium">Fuel Type:</span> {selectedVehicle.fuelType}</div>
-                                  <div><span className="font-medium">Ownership:</span> {selectedVehicle.vehicleOwnership}</div>
-                                  <div><span className="font-medium">Permit Type:</span> {selectedVehicle.permitType}</div>
-                                </div>
-                              </div>
-                              <div>
-                                <h4 className="font-semibold mb-2">Important Dates</h4>
-                                <div className="space-y-2 text-sm">
-                                  <div><span className="font-medium">Manufacturing Date:</span> {selectedVehicle.manufacturingDate}</div>
-                                  <div><span className="font-medium">Induction Date:</span> {selectedVehicle.inductionDate}</div>
-                                  <div><span className="font-medium">Registration Date:</span> {selectedVehicle.registrationDate}</div>
-                                  <div><span className="font-medium">Insurance Expiry:</span> {selectedVehicle.insuranceExpiryDate}</div>
-                                  <div><span className="font-medium">Road Tax Expiry:</span> {selectedVehicle.roadTaxExpiryDate}</div>
-                                  <div><span className="font-medium">Pollution Certificate Expiry:</span> {selectedVehicle.pollutionCertificateExpiryDate}</div>
-                                  <div><span className="font-medium">Commercial Permit Expiry:</span> {selectedVehicle.commercialPermitExpiryDate}</div>
-                                  <div><span className="font-medium">Fitness Expiry:</span> {selectedVehicle.fitnessExpiryDate}</div>
-                                  <div><span className="font-medium">Service Expiry:</span> {selectedVehicle.vehicleServiceExpiryDate}</div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
+                           {selectedVehicle && (
+                             <>
+                               <div className="grid grid-cols-2 gap-4">
+                                 <div>
+                                   <h4 className="font-semibold mb-2">Basic Information</h4>
+                                   <div className="space-y-2 text-sm">
+                                     <div><span className="font-medium">ETS Vehicle ID:</span> {selectedVehicle.etsVehicleId}</div>
+                                     <div><span className="font-medium">Registration Number:</span> {selectedVehicle.registrationNumber}</div>
+                                     <div><span className="font-medium">Vehicle Type:</span> {selectedVehicle.vehicleType}</div>
+                                     <div><span className="font-medium">Fuel Type:</span> {selectedVehicle.fuelType}</div>
+                                     <div><span className="font-medium">Ownership:</span> {selectedVehicle.vehicleOwnership}</div>
+                                     <div><span className="font-medium">Permit Type:</span> {selectedVehicle.permitType}</div>
+                                   </div>
+                                 </div>
+                                 <div>
+                                   <h4 className="font-semibold mb-2">Important Dates</h4>
+                                   <div className="space-y-2 text-sm">
+                                     <div><span className="font-medium">Manufacturing Date:</span> {selectedVehicle.manufacturingDate}</div>
+                                     <div><span className="font-medium">Induction Date:</span> {selectedVehicle.inductionDate}</div>
+                                     <div><span className="font-medium">Registration Date:</span> {selectedVehicle.registrationDate}</div>
+                                     <div><span className="font-medium">Insurance Expiry:</span> {selectedVehicle.insuranceExpiryDate}</div>
+                                     <div><span className="font-medium">Road Tax Expiry:</span> {selectedVehicle.roadTaxExpiryDate}</div>
+                                     <div><span className="font-medium">Pollution Certificate Expiry:</span> {selectedVehicle.pollutionCertificateExpiryDate}</div>
+                                     <div><span className="font-medium">Commercial Permit Expiry:</span> {selectedVehicle.commercialPermitExpiryDate}</div>
+                                     <div><span className="font-medium">Fitness Expiry:</span> {selectedVehicle.fitnessExpiryDate}</div>
+                                     <div><span className="font-medium">Service Expiry:</span> {selectedVehicle.vehicleServiceExpiryDate}</div>
+                                   </div>
+                                 </div>
+                               </div>
+                               <div className="flex justify-end space-x-2 mt-4">
+                                 <Button 
+                                   variant="outline" 
+                                   onClick={() => handleEdit(selectedVehicle)}
+                                 >
+                                   <Edit className="mr-2 h-4 w-4" />
+                                   Edit
+                                 </Button>
+                                 <Button 
+                                   variant="destructive" 
+                                   onClick={() => handleDeactivate(selectedVehicle.id)}
+                                 >
+                                   Deactivate
+                                 </Button>
+                               </div>
+                             </>
+                           )}
                         </DialogContent>
                       </Dialog>
                       <DropdownMenu>
@@ -388,10 +448,10 @@ export const VehicleManagement = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => handleEdit(vehicle.id)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
+                           <DropdownMenuItem onClick={() => handleEdit(vehicle)}>
+                             <Edit className="mr-2 h-4 w-4" />
+                             Edit
+                           </DropdownMenuItem>
                           <DropdownMenuItem 
                             onClick={() => handleDelete(vehicle.id)}
                             className="text-red-600"
@@ -409,6 +469,107 @@ export const VehicleManagement = () => {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Edit Vehicle - {editingVehicle?.etsVehicleId}</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleEditSubmit)} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="insuranceExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Insurance Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="roadTaxExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Road Tax Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="pollutionCertificateExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pollution Certificate Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="commercialPermitExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Commercial Permit Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="fitnessExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Fitness Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="vehicleServiceExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Service Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  Update Vehicle
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
