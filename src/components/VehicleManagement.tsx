@@ -41,6 +41,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { 
   Settings, 
   Activity,
@@ -64,6 +75,7 @@ export const VehicleManagement = () => {
   const [editingVehicle, setEditingVehicle] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [deactivationReason, setDeactivationReason] = useState('');
   
   const editForm = useForm({
     defaultValues: {
@@ -252,9 +264,10 @@ export const VehicleManagement = () => {
     addForm.reset();
   };
 
-  const handleDeactivate = (vehicleId: number) => {
-    console.log('Deactivate vehicle:', vehicleId);
+  const handleDeactivate = (vehicleId: number, reason: string) => {
+    console.log('Deactivate vehicle:', vehicleId, 'Reason:', reason);
     // Add deactivate functionality here
+    setDeactivationReason('');
   };
 
   const handleDelete = (vehicleId: number) => {
@@ -473,12 +486,39 @@ export const VehicleManagement = () => {
                                    <Edit className="mr-2 h-4 w-4" />
                                    Edit
                                  </Button>
-                                 <Button 
-                                   variant="destructive" 
-                                   onClick={() => handleDeactivate(selectedVehicle.id)}
-                                 >
-                                   Deactivate
-                                 </Button>
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button variant="destructive">
+                                        Deactivate
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>Deactivate Vehicle</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          Are you sure you want to deactivate vehicle {selectedVehicle?.etsVehicleId}? Please provide a reason for deactivation.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <div className="my-4">
+                                        <Label htmlFor="deactivation-reason">Reason for Deactivation</Label>
+                                        <Input
+                                          id="deactivation-reason"
+                                          value={deactivationReason}
+                                          onChange={(e) => setDeactivationReason(e.target.value)}
+                                          placeholder="Enter reason for deactivation..."
+                                        />
+                                      </div>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel onClick={() => setDeactivationReason('')}>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction 
+                                          onClick={() => handleDeactivate(selectedVehicle.id, deactivationReason)}
+                                          disabled={!deactivationReason.trim()}
+                                        >
+                                          Confirm Deactivate
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
                                </div>
                              </>
                            )}

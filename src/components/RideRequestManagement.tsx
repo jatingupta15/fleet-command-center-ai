@@ -24,7 +24,8 @@ export const RideRequestManagement = () => {
       rider: {
         name: 'Anita Patel',
         phone: '+91 98765 43210',
-        employee_id: 'INF001234'
+        employee_id: 'INF001234',
+        department: 'IT Services'
       },
       pickup: {
         location: 'Electronic City Phase 1',
@@ -38,7 +39,9 @@ export const RideRequestManagement = () => {
       vehicleType: 'Sedan',
       estimatedDistance: '12.5 km',
       estimatedDuration: '35 mins',
-      specialRequests: 'None',
+      tripType: 'Both',
+      reasonForRequest: 'Office commute',
+      additionalNotes: 'None',
       assignedDriver: null,
       assignedVehicle: null,
     },
@@ -51,7 +54,8 @@ export const RideRequestManagement = () => {
       rider: {
         name: 'Rohit Sharma',
         phone: '+91 98765 43211',
-        employee_id: 'ACC005678'
+        employee_id: 'ACC005678',
+        department: 'Finance'
       },
       pickup: {
         location: 'Whitefield',
@@ -65,7 +69,9 @@ export const RideRequestManagement = () => {
       vehicleType: 'SUV',
       estimatedDistance: '28.3 km',
       estimatedDuration: '55 mins',
-      specialRequests: 'Airport pickup - flight at 8 PM',
+      tripType: 'Drop Only',
+      reasonForRequest: 'Airport transfer',
+      additionalNotes: 'Airport pickup - flight at 8 PM',
       assignedDriver: 'Rajesh Kumar',
       assignedVehicle: 'KA-01-HH-1234',
     },
@@ -78,7 +84,8 @@ export const RideRequestManagement = () => {
       rider: {
         name: 'Priya Singh',
         phone: '+91 98765 43212',
-        employee_id: 'TCS009876'
+        employee_id: 'TCS009876',
+        department: 'Human Resources'
       },
       pickup: {
         location: 'HSR Layout',
@@ -92,7 +99,9 @@ export const RideRequestManagement = () => {
       vehicleType: 'Sedan',
       estimatedDistance: '15.2 km',
       estimatedDuration: '42 mins',
-      specialRequests: 'None',
+      tripType: 'Pickup Only',
+      reasonForRequest: 'Office pickup',
+      additionalNotes: 'None',
       assignedDriver: 'Amit Sharma',
       assignedVehicle: 'KA-01-HH-5678',
     },
@@ -122,10 +131,6 @@ export const RideRequestManagement = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-900">Ride Request Management</h2>
-        <Button className="bg-blue-600 hover:bg-blue-700">
-          <Calendar className="mr-2 h-4 w-4" />
-          Bulk Schedule
-        </Button>
       </div>
 
       {/* Summary Cards */}
@@ -222,37 +227,33 @@ export const RideRequestManagement = () => {
                   <p className="text-sm text-gray-700"><strong>Name:</strong> {request.rider.name}</p>
                   <p className="text-sm text-gray-700"><strong>Phone:</strong> {request.rider.phone}</p>
                   <p className="text-sm text-gray-700"><strong>Employee ID:</strong> {request.rider.employee_id}</p>
+                  <p className="text-sm text-gray-700"><strong>Department:</strong> {request.rider.department}</p>
                 </div>
 
                 {/* Trip Details */}
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <h4 className="font-medium text-blue-900 mb-2">Trip Details</h4>
-                  <p className="text-sm text-blue-800"><strong>Vehicle Type:</strong> {request.vehicleType}</p>
+                  <p className="text-sm text-blue-800"><strong>Trip Type:</strong> {request.tripType}</p>
                   <p className="text-sm text-blue-800"><strong>Distance:</strong> {request.estimatedDistance}</p>
                   <p className="text-sm text-blue-800"><strong>Duration:</strong> {request.estimatedDuration}</p>
-                  <p className="text-sm text-blue-800"><strong>Pickup Time:</strong> {request.pickup.time}</p>
-                </div>
-              </div>
-
-              {/* Route */}
-              <div className="bg-green-50 p-4 rounded-lg mb-4">
-                <h4 className="font-medium text-green-900 mb-2">Route</h4>
-                <div className="flex items-center space-x-2">
-                  <div className="text-sm text-green-800">
-                    <strong>From:</strong> {request.pickup.address}
-                  </div>
-                  <Map className="h-4 w-4 text-green-600" />
-                  <div className="text-sm text-green-800">
-                    <strong>To:</strong> {request.dropoff.address}
+                  <p className="text-sm text-blue-800"><strong>Date & Time:</strong> {request.pickup.time}</p>
+                  <p className="text-sm text-blue-800"><strong>Reason:</strong> {request.reasonForRequest}</p>
+                  <div className="mt-2">
+                    <p className="text-sm text-blue-800"><strong>Route:</strong></p>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <span className="text-xs text-blue-700">From: {request.pickup.address}</span>
+                      <Map className="h-3 w-3 text-blue-600" />
+                      <span className="text-xs text-blue-700">To: {request.dropoff.address}</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Special Requests */}
-              {request.specialRequests !== 'None' && (
+              {/* Additional Notes */}
+              {request.additionalNotes !== 'None' && (
                 <div className="bg-yellow-50 p-4 rounded-lg mb-4">
-                  <h4 className="font-medium text-yellow-900 mb-2">Special Requests</h4>
-                  <p className="text-sm text-yellow-800">{request.specialRequests}</p>
+                  <h4 className="font-medium text-yellow-900 mb-2">Additional Notes</h4>
+                  <p className="text-sm text-yellow-800">{request.additionalNotes}</p>
                 </div>
               )}
 
