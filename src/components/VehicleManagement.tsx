@@ -4,16 +4,46 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { 
   Settings, 
   Activity,
   Clock,
   CheckCircle,
-  AlertTriangle
+  AlertTriangle,
+  MoreVertical,
+  Eye,
+  Edit,
+  Trash2,
+  Plus
 } from 'lucide-react';
 
 export const VehicleManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [vehicleTypeFilter, setVehicleTypeFilter] = useState('all');
+  const [fuelTypeFilter, setFuelTypeFilter] = useState('all');
+  const [ownershipFilter, setOwnershipFilter] = useState('all');
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   const vehicles = [
     {
@@ -30,7 +60,8 @@ export const VehicleManagement = () => {
       fitnessExpiryDate: '2025-03-15',
       vehicleServiceExpiryDate: '2024-07-30',
       ehs: 'Compliant',
-      vehicleType: 'Petrol',
+      vehicleType: 'Sedan',
+      fuelType: 'Petrol',
       vehicleOwnership: 'Company Owned',
       permitType: 'Commercial',
       status: 'Available',
@@ -49,7 +80,8 @@ export const VehicleManagement = () => {
       fitnessExpiryDate: '2024-08-22',
       vehicleServiceExpiryDate: '2024-08-15',
       ehs: 'Compliant',
-      vehicleType: 'Diesel',
+      vehicleType: 'SUV',
+      fuelType: 'Diesel',
       vehicleOwnership: 'Vendor Owned',
       permitType: 'Commercial',
       status: 'In Use',
@@ -68,7 +100,8 @@ export const VehicleManagement = () => {
       fitnessExpiryDate: '2026-01-10',
       vehicleServiceExpiryDate: '2024-08-10',
       ehs: 'Non-Compliant',
-      vehicleType: 'CNG',
+      vehicleType: 'Premium',
+      fuelType: 'CNG',
       vehicleOwnership: 'Company Owned',
       permitType: 'Private',
       status: 'Maintenance',
@@ -87,7 +120,8 @@ export const VehicleManagement = () => {
       fitnessExpiryDate: '2024-12-05',
       vehicleServiceExpiryDate: '2024-09-10',
       ehs: 'Compliant',
-      vehicleType: 'Petrol',
+      vehicleType: 'Sedan',
+      fuelType: 'Petrol',
       vehicleOwnership: 'Vendor Owned',
       permitType: 'Commercial',
       status: 'Available',
@@ -99,7 +133,10 @@ export const VehicleManagement = () => {
                          vehicle.etsVehicleId.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          vehicle.vehicleType.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || vehicle.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesStatus;
+    const matchesVehicleType = vehicleTypeFilter === 'all' || vehicle.vehicleType.toLowerCase() === vehicleTypeFilter.toLowerCase();
+    const matchesFuelType = fuelTypeFilter === 'all' || vehicle.fuelType.toLowerCase() === fuelTypeFilter.toLowerCase();
+    const matchesOwnership = ownershipFilter === 'all' || vehicle.vehicleOwnership.toLowerCase() === ownershipFilter.toLowerCase();
+    return matchesSearch && matchesStatus && matchesVehicleType && matchesFuelType && matchesOwnership;
   });
 
   const getStatusColor = (status: string) => {
@@ -128,12 +165,26 @@ export const VehicleManagement = () => {
     }
   };
 
+  const handleViewDetails = (vehicle: any) => {
+    setSelectedVehicle(vehicle);
+  };
+
+  const handleEdit = (vehicleId: number) => {
+    console.log('Edit vehicle:', vehicleId);
+    // Add edit functionality here
+  };
+
+  const handleDelete = (vehicleId: number) => {
+    console.log('Delete vehicle:', vehicleId);
+    // Add delete functionality here
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-900">Vehicle Management</h2>
         <Button className="bg-blue-600 hover:bg-blue-700">
-          <Settings className="mr-2 h-4 w-4" />
+          <Plus className="mr-2 h-4 w-4" />
           Add New Vehicle
         </Button>
       </div>
@@ -196,7 +247,7 @@ export const VehicleManagement = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Input
           placeholder="Search by ETS ID, Registration Number, or Vehicle Type..."
           value={searchTerm}
@@ -213,81 +264,151 @@ export const VehicleManagement = () => {
           <option value="in use">In Use</option>
           <option value="maintenance">Maintenance</option>
         </select>
+        <select
+          value={vehicleTypeFilter}
+          onChange={(e) => setVehicleTypeFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-md"
+        >
+          <option value="all">All Vehicle Types</option>
+          <option value="sedan">Sedan</option>
+          <option value="suv">SUV</option>
+          <option value="premium">Premium</option>
+        </select>
+        <select
+          value={fuelTypeFilter}
+          onChange={(e) => setFuelTypeFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-md"
+        >
+          <option value="all">All Fuel Types</option>
+          <option value="petrol">Petrol</option>
+          <option value="diesel">Diesel</option>
+          <option value="cng">CNG</option>
+        </select>
+        <select
+          value={ownershipFilter}
+          onChange={(e) => setOwnershipFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-md"
+        >
+          <option value="all">All Ownership</option>
+          <option value="company owned">Company Owned</option>
+          <option value="vendor owned">Vendor Owned</option>
+        </select>
       </div>
 
-      {/* Vehicle List */}
-      <div className="grid grid-cols-1 gap-4">
-        {filteredVehicles.map((vehicle) => (
-          <Card key={vehicle.id} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Settings className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{vehicle.etsVehicleId}</h3>
-                    <p className="text-sm text-gray-600">{vehicle.registrationNumber}</p>
-                    <p className="text-sm text-gray-600">{vehicle.vehicleType} • {vehicle.vehicleOwnership}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${getStatusColor(vehicle.status)}`}>
-                    {getStatusIcon(vehicle.status)}
-                    <span>{vehicle.status}</span>
-                  </span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${vehicle.ehs === 'Compliant' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    EHS: {vehicle.ehs}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-sm">
-                <div>
-                  <p className="font-medium text-gray-600">Manufacturing Date</p>
-                  <p className="text-gray-900">{vehicle.manufacturingDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Induction Date</p>
-                  <p className="text-gray-900">{vehicle.inductionDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Registration Date</p>
-                  <p className="text-gray-900">{vehicle.registrationDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Insurance Expiry</p>
-                  <p className="text-gray-900">{vehicle.insuranceExpiryDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Road Tax Expiry</p>
-                  <p className="text-gray-900">{vehicle.roadTaxExpiryDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Pollution Certificate</p>
-                  <p className="text-gray-900">{vehicle.pollutionCertificateExpiryDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Commercial Permit</p>
-                  <p className="text-gray-900">{vehicle.commercialPermitExpiryDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Fitness Expiry</p>
-                  <p className="text-gray-900">{vehicle.fitnessExpiryDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Service Expiry</p>
-                  <p className="text-gray-900">{vehicle.vehicleServiceExpiryDate}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-600">Permit Type</p>
-                  <p className="text-gray-900">{vehicle.permitType}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* Vehicle Table */}
+      <Card>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ETS Vehicle ID</TableHead>
+                <TableHead>Registration Number</TableHead>
+                <TableHead>Vehicle Type</TableHead>
+                <TableHead>Fuel Type</TableHead>
+                <TableHead>Ownership</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>EHS</TableHead>
+                <TableHead>Insurance Expiry</TableHead>
+                <TableHead>Service Expiry</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredVehicles.map((vehicle) => (
+                <TableRow key={vehicle.id}>
+                  <TableCell className="font-medium">{vehicle.etsVehicleId}</TableCell>
+                  <TableCell>{vehicle.registrationNumber}</TableCell>
+                  <TableCell>{vehicle.vehicleType}</TableCell>
+                  <TableCell>{vehicle.fuelType}</TableCell>
+                  <TableCell>{vehicle.vehicleOwnership}</TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 w-fit ${getStatusColor(vehicle.status)}`}>
+                      {getStatusIcon(vehicle.status)}
+                      <span>{vehicle.status}</span>
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${vehicle.ehs === 'Compliant' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {vehicle.ehs}
+                    </span>
+                  </TableCell>
+                  <TableCell>{vehicle.insuranceExpiryDate}</TableCell>
+                  <TableCell>{vehicle.vehicleServiceExpiryDate}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end space-x-2">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewDetails(vehicle)}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-4xl">
+                          <DialogHeader>
+                            <DialogTitle>Vehicle Details - {selectedVehicle?.etsVehicleId}</DialogTitle>
+                          </DialogHeader>
+                          {selectedVehicle && (
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <h4 className="font-semibold mb-2">Basic Information</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div><span className="font-medium">ETS Vehicle ID:</span> {selectedVehicle.etsVehicleId}</div>
+                                  <div><span className="font-medium">Registration Number:</span> {selectedVehicle.registrationNumber}</div>
+                                  <div><span className="font-medium">Vehicle Type:</span> {selectedVehicle.vehicleType}</div>
+                                  <div><span className="font-medium">Fuel Type:</span> {selectedVehicle.fuelType}</div>
+                                  <div><span className="font-medium">Ownership:</span> {selectedVehicle.vehicleOwnership}</div>
+                                  <div><span className="font-medium">Permit Type:</span> {selectedVehicle.permitType}</div>
+                                </div>
+                              </div>
+                              <div>
+                                <h4 className="font-semibold mb-2">Important Dates</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div><span className="font-medium">Manufacturing Date:</span> {selectedVehicle.manufacturingDate}</div>
+                                  <div><span className="font-medium">Induction Date:</span> {selectedVehicle.inductionDate}</div>
+                                  <div><span className="font-medium">Registration Date:</span> {selectedVehicle.registrationDate}</div>
+                                  <div><span className="font-medium">Insurance Expiry:</span> {selectedVehicle.insuranceExpiryDate}</div>
+                                  <div><span className="font-medium">Road Tax Expiry:</span> {selectedVehicle.roadTaxExpiryDate}</div>
+                                  <div><span className="font-medium">Pollution Certificate Expiry:</span> {selectedVehicle.pollutionCertificateExpiryDate}</div>
+                                  <div><span className="font-medium">Commercial Permit Expiry:</span> {selectedVehicle.commercialPermitExpiryDate}</div>
+                                  <div><span className="font-medium">Fitness Expiry:</span> {selectedVehicle.fitnessExpiryDate}</div>
+                                  <div><span className="font-medium">Service Expiry:</span> {selectedVehicle.vehicleServiceExpiryDate}</div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </DialogContent>
+                      </Dialog>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="sm">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => handleEdit(vehicle.id)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => handleDelete(vehicle.id)}
+                            className="text-red-600"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 };
