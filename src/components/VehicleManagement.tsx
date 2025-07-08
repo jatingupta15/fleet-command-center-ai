@@ -535,13 +535,43 @@ export const VehicleManagement = () => {
                              <Edit className="mr-2 h-4 w-4" />
                              Edit
                            </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            onClick={() => handleDelete(vehicle.id)}
-                            className="text-red-600"
-                          >
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <DropdownMenuItem 
+                                onSelect={(e) => e.preventDefault()}
+                                className="text-red-600"
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Deactivate
+                              </DropdownMenuItem>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Deactivate Vehicle</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to deactivate vehicle {vehicle.etsVehicleId}? Please provide a reason for deactivation.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <div className="my-4">
+                                <Label htmlFor="table-deactivation-reason">Reason for Deactivation</Label>
+                                <Input
+                                  id="table-deactivation-reason"
+                                  value={deactivationReason}
+                                  onChange={(e) => setDeactivationReason(e.target.value)}
+                                  placeholder="Enter reason for deactivation..."
+                                />
+                              </div>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel onClick={() => setDeactivationReason('')}>Cancel</AlertDialogCancel>
+                                <AlertDialogAction 
+                                  onClick={() => handleDeactivate(vehicle.id, deactivationReason)}
+                                  disabled={!deactivationReason.trim()}
+                                >
+                                  Confirm Deactivate
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>

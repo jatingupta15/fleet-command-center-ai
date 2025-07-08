@@ -230,41 +230,26 @@ export const RideRequestManagement = () => {
                   <p className="text-sm text-gray-700"><strong>Department:</strong> {request.rider.department}</p>
                 </div>
 
-                {/* Trip Details */}
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h4 className="font-medium text-blue-900 mb-2">Trip Details</h4>
-                  <p className="text-sm text-blue-800"><strong>Trip Type:</strong> {request.tripType}</p>
-                  <p className="text-sm text-blue-800"><strong>Distance:</strong> {request.estimatedDistance}</p>
-                  <p className="text-sm text-blue-800"><strong>Duration:</strong> {request.estimatedDuration}</p>
-                  <p className="text-sm text-blue-800"><strong>Date & Time:</strong> {request.pickup.time}</p>
-                  <p className="text-sm text-blue-800"><strong>Reason:</strong> {request.reasonForRequest}</p>
-                  <div className="mt-2">
-                    <p className="text-sm text-blue-800"><strong>Route:</strong></p>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <span className="text-xs text-blue-700">From: {request.pickup.address}</span>
-                      <Map className="h-3 w-3 text-blue-600" />
-                      <span className="text-xs text-blue-700">To: {request.dropoff.address}</span>
-                    </div>
+              {/* Trip Details */}
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-3">Trip Details</h4>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div><span className="font-medium text-blue-800">Type:</span> <span className="text-blue-700">{request.tripType}</span></div>
+                  <div><span className="font-medium text-blue-800">Distance:</span> <span className="text-blue-700">{request.estimatedDistance}</span></div>
+                  <div><span className="font-medium text-blue-800">Duration:</span> <span className="text-blue-700">{request.estimatedDuration}</span></div>
+                  <div><span className="font-medium text-blue-800">Date & Time:</span> <span className="text-blue-700">{request.pickup.time}</span></div>
+                  <div className="col-span-2"><span className="font-medium text-blue-800">Reason:</span> <span className="text-blue-700">{request.reasonForRequest}</span></div>
+                </div>
+                <div className="mt-3 pt-3 border-t border-blue-200">
+                  <div className="flex items-center justify-between text-xs text-blue-700">
+                    <span className="truncate max-w-[45%]">{request.pickup.location}</span>
+                    <Map className="h-3 w-3 text-blue-600 mx-2" />
+                    <span className="truncate max-w-[45%]">{request.dropoff.location}</span>
                   </div>
                 </div>
               </div>
+              </div>
 
-              {/* Additional Notes */}
-              {request.additionalNotes !== 'None' && (
-                <div className="bg-yellow-50 p-4 rounded-lg mb-4">
-                  <h4 className="font-medium text-yellow-900 mb-2">Additional Notes</h4>
-                  <p className="text-sm text-yellow-800">{request.additionalNotes}</p>
-                </div>
-              )}
-
-              {/* Assignment Status */}
-              {request.assignedDriver && request.assignedVehicle && (
-                <div className="bg-green-50 p-4 rounded-lg mb-4">
-                  <h4 className="font-medium text-green-900 mb-2">Assignment</h4>
-                  <p className="text-sm text-green-800"><strong>Driver:</strong> {request.assignedDriver}</p>
-                  <p className="text-sm text-green-800"><strong>Vehicle:</strong> {request.assignedVehicle}</p>
-                </div>
-              )}
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-2">
