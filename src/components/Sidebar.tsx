@@ -25,7 +25,6 @@ const menuItems = [
   { id: 'drivers', label: 'Driver Management', icon: Users },
   { id: 'vehicles', label: 'Vehicle Management', icon: Settings },
   { id: 'rides', label: 'Ride Requests', icon: Calendar },
-  { id: 'tracking', label: 'Live Tracking', icon: Map },
   { id: 'sos', label: 'SOS Management', icon: Bell },
   { id: 'analytics', label: 'Analytics', icon: FileText },
   { id: 'settings', label: 'Settings', icon: Settings },

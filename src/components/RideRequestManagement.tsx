@@ -20,7 +20,6 @@ export const RideRequestManagement = () => {
       id: 'RR001',
       timestamp: '2024-01-07 10:30:00',
       status: 'Pending',
-      priority: 'Standard',
       organization: 'Infosys Ltd',
       rider: {
         name: 'Anita Patel',
@@ -47,7 +46,7 @@ export const RideRequestManagement = () => {
       id: 'RR002',
       timestamp: '2024-01-07 09:45:00',
       status: 'Scheduled',
-      priority: 'High',
+      
       organization: 'Accenture',
       rider: {
         name: 'Rohit Sharma',
@@ -74,7 +73,7 @@ export const RideRequestManagement = () => {
       id: 'RR003',
       timestamp: '2024-01-07 08:15:00',
       status: 'Completed',
-      priority: 'Standard',
+      
       organization: 'TCS',
       rider: {
         name: 'Priya Singh',
@@ -118,16 +117,6 @@ export const RideRequestManagement = () => {
     }
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'High':
-        return 'bg-red-100 text-red-800';
-      case 'Standard':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -183,19 +172,6 @@ export const RideRequestManagement = () => {
           </CardContent>
         </Card>
         
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">High Priority</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {rideRequests.filter(r => r.priority === 'High').length}
-                </p>
-              </div>
-              <Settings className="h-8 w-8 text-red-600" />
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Filters */}
@@ -211,7 +187,7 @@ export const RideRequestManagement = () => {
           <option value="completed">Completed</option>
         </select>
         <Button variant="outline">Filter by Client</Button>
-        <Button variant="outline">Filter by Priority</Button>
+        
         <Button variant="outline">Today's Requests</Button>
       </div>
 
@@ -232,9 +208,6 @@ export const RideRequestManagement = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(request.priority)}`}>
-                    {request.priority}
-                  </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
                     {request.status}
                   </span>
@@ -284,7 +257,7 @@ export const RideRequestManagement = () => {
               )}
 
               {/* Assignment Status */}
-              {request.assignedDriver && (
+              {request.assignedDriver && request.assignedVehicle && (
                 <div className="bg-green-50 p-4 rounded-lg mb-4">
                   <h4 className="font-medium text-green-900 mb-2">Assignment</h4>
                   <p className="text-sm text-green-800"><strong>Driver:</strong> {request.assignedDriver}</p>
@@ -295,28 +268,14 @@ export const RideRequestManagement = () => {
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-2">
                 {request.status === 'Pending' && (
-                  <>
-                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                      <Users className="mr-1 h-4 w-4" />
-                      Assign Driver
-                    </Button>
-                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                      <Settings className="mr-1 h-4 w-4" />
-                      Allocate Vehicle
-                    </Button>
-                  </>
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <Users className="mr-1 h-4 w-4" />
+                    Assign Driver & Vehicle
+                  </Button>
                 )}
                 <Button variant="outline" size="sm">
                   <Map className="mr-1 h-4 w-4" />
                   View Route
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Calendar className="mr-1 h-4 w-4" />
-                  Reschedule
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Settings className="mr-1 h-4 w-4" />
-                  Edit Details
                 </Button>
                 {request.status === 'Pending' && (
                   <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">

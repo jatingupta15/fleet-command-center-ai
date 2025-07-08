@@ -5,7 +5,7 @@ import { DashboardOverview } from '@/components/DashboardOverview';
 import { ClientManagement } from '@/components/ClientManagement';
 import { DriverManagement } from '@/components/DriverManagement';
 import { VehicleManagement } from '@/components/VehicleManagement';
-import { LiveTracking } from '@/components/LiveTracking';
+
 import { SOSManagement } from '@/components/SOSManagement';
 import { RideRequestManagement } from '@/components/RideRequestManagement';
 import { Analytics } from '@/components/Analytics';
@@ -26,8 +26,6 @@ const Index = () => {
         return <DriverManagement />;
       case 'vehicles':
         return <VehicleManagement />;
-      case 'tracking':
-        return <LiveTracking />;
       case 'sos':
         return <SOSManagement />;
       case 'rides':
