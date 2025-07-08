@@ -28,6 +28,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -56,8 +63,9 @@ export const VehicleManagement = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [editingVehicle, setEditingVehicle] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   
-  const form = useForm({
+  const editForm = useForm({
     defaultValues: {
       insuranceExpiryDate: '',
       roadTaxExpiryDate: '',
@@ -65,6 +73,27 @@ export const VehicleManagement = () => {
       commercialPermitExpiryDate: '',
       fitnessExpiryDate: '',
       vehicleServiceExpiryDate: '',
+    }
+  });
+
+  const addForm = useForm({
+    defaultValues: {
+      etsVehicleId: '',
+      registrationNumber: '',
+      manufacturingDate: '',
+      inductionDate: '',
+      registrationDate: '',
+      insuranceExpiryDate: '',
+      roadTaxExpiryDate: '',
+      pollutionCertificateExpiryDate: '',
+      commercialPermitExpiryDate: '',
+      fitnessExpiryDate: '',
+      vehicleServiceExpiryDate: '',
+      ehs: 'Compliant',
+      vehicleType: '',
+      fuelType: '',
+      vehicleOwnership: '',
+      permitType: '',
     }
   });
 
@@ -194,7 +223,7 @@ export const VehicleManagement = () => {
 
   const handleEdit = (vehicle: any) => {
     setEditingVehicle(vehicle);
-    form.reset({
+    editForm.reset({
       insuranceExpiryDate: vehicle.insuranceExpiryDate,
       roadTaxExpiryDate: vehicle.roadTaxExpiryDate,
       pollutionCertificateExpiryDate: vehicle.pollutionCertificateExpiryDate,
@@ -212,6 +241,17 @@ export const VehicleManagement = () => {
     setEditingVehicle(null);
   };
 
+  const handleAddVehicle = () => {
+    setIsAddDialogOpen(true);
+  };
+
+  const handleAddSubmit = (data: any) => {
+    console.log('Adding new vehicle:', data);
+    // Add vehicle to list here
+    setIsAddDialogOpen(false);
+    addForm.reset();
+  };
+
   const handleDeactivate = (vehicleId: number) => {
     console.log('Deactivate vehicle:', vehicleId);
     // Add deactivate functionality here
@@ -226,7 +266,10 @@ export const VehicleManagement = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-900">Vehicle Management</h2>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button 
+          className="bg-blue-600 hover:bg-blue-700"
+          onClick={handleAddVehicle}
+        >
           <Plus className="mr-2 h-4 w-4" />
           Add New Vehicle
         </Button>
@@ -476,11 +519,11 @@ export const VehicleManagement = () => {
           <DialogHeader>
             <DialogTitle>Edit Vehicle - {editingVehicle?.etsVehicleId}</DialogTitle>
           </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleEditSubmit)} className="space-y-4">
+          <Form {...editForm}>
+            <form onSubmit={editForm.handleSubmit(handleEditSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <FormField
-                  control={form.control}
+                  control={editForm.control}
                   name="insuranceExpiryDate"
                   render={({ field }) => (
                     <FormItem>
@@ -493,7 +536,7 @@ export const VehicleManagement = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={editForm.control}
                   name="roadTaxExpiryDate"
                   render={({ field }) => (
                     <FormItem>
@@ -506,7 +549,7 @@ export const VehicleManagement = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={editForm.control}
                   name="pollutionCertificateExpiryDate"
                   render={({ field }) => (
                     <FormItem>
@@ -519,7 +562,7 @@ export const VehicleManagement = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={editForm.control}
                   name="commercialPermitExpiryDate"
                   render={({ field }) => (
                     <FormItem>
@@ -532,7 +575,7 @@ export const VehicleManagement = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={editForm.control}
                   name="fitnessExpiryDate"
                   render={({ field }) => (
                     <FormItem>
@@ -545,7 +588,7 @@ export const VehicleManagement = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={editForm.control}
                   name="vehicleServiceExpiryDate"
                   render={({ field }) => (
                     <FormItem>
@@ -564,6 +607,279 @@ export const VehicleManagement = () => {
                 </Button>
                 <Button type="submit">
                   Update Vehicle
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add New Vehicle Dialog */}
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add New Vehicle</DialogTitle>
+          </DialogHeader>
+          <Form {...addForm}>
+            <form onSubmit={addForm.handleSubmit(handleAddSubmit)} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={addForm.control}
+                  name="etsVehicleId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ETS Vehicle ID</FormLabel>
+                      <FormControl>
+                        <Input placeholder="ETS001" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="registrationNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Registration Number</FormLabel>
+                      <FormControl>
+                        <Input placeholder="KA-01-HH-1234" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="manufacturingDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Manufacturing Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="inductionDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Induction Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="registrationDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Registration Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="insuranceExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Insurance Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="roadTaxExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Road Tax Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="pollutionCertificateExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pollution Certificate Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="commercialPermitExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Commercial Permit Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="fitnessExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Fitness Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="vehicleServiceExpiryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Service Expiry Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="ehs"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>EHS</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select EHS status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Compliant">Compliant</SelectItem>
+                          <SelectItem value="Non-Compliant">Non-Compliant</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="vehicleType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Vehicle Type</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select vehicle type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Sedan">Sedan</SelectItem>
+                          <SelectItem value="SUV">SUV</SelectItem>
+                          <SelectItem value="Premium">Premium</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="fuelType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Fuel Type</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select fuel type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Petrol">Petrol</SelectItem>
+                          <SelectItem value="Diesel">Diesel</SelectItem>
+                          <SelectItem value="CNG">CNG</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="vehicleOwnership"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Vehicle Ownership</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select ownership type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Company Owned">Company Owned</SelectItem>
+                          <SelectItem value="Vendor Owned">Vendor Owned</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={addForm.control}
+                  name="permitType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Permit Type</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select permit type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Commercial">Commercial</SelectItem>
+                          <SelectItem value="Private">Private</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  Add Vehicle
                 </Button>
               </div>
             </form>
