@@ -21,10 +21,10 @@ interface SidebarProps {
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: Activity },
+  { id: 'rides', label: 'Ride Requests', icon: Calendar },
   { id: 'clients', label: 'Client Management', icon: Users },
   { id: 'drivers', label: 'Driver Management', icon: Users },
   { id: 'vehicles', label: 'Vehicle Management', icon: Settings },
-  { id: 'rides', label: 'Ride Requests', icon: Calendar },
   { id: 'sos', label: 'SOS Management', icon: Bell },
   { id: 'analytics', label: 'Analytics', icon: FileText },
   { id: 'settings', label: 'Settings', icon: Settings },

@@ -128,11 +128,21 @@ export const ClientManagement = () => {
       {/* Billing Notification */}
       {clients.some(client => new Date(client.nextBillingDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) && (
         <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-          <div className="flex items-center">
-            <FileText className="h-5 w-5 text-orange-600 mr-2" />
-            <p className="text-orange-800 font-medium">
-              Billing Alert: {clients.filter(client => new Date(client.nextBillingDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)).length} client(s) have upcoming billing dates within 7 days.
-            </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <FileText className="h-5 w-5 text-orange-600 mr-2" />
+              <p className="text-orange-800 font-medium">
+                Billing Alert: {clients.filter(client => new Date(client.nextBillingDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)).length} client(s) have upcoming billing dates within 7 days.
+              </p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" size="sm" onClick={() => navigate('/billing-preview')}>
+                View Preview
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => {}}>
+                ×
+              </Button>
+            </div>
           </div>
         </div>
       )}

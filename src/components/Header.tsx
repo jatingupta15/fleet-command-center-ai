@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({ sosAlerts }) => {
         </div>
         
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" className="relative">
+          <Button variant="ghost" size="sm" className="relative" onClick={() => window.location.hash = 'notifications'}>
             <Bell className="h-5 w-5" />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               3
@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ sosAlerts }) => {
           <Button variant="ghost" size="sm">
             <Settings className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" className="flex items-center space-x-2" onClick={() => window.location.hash = 'profile'}>
             <User className="h-5 w-5" />
             <span>Admin</span>
           </Button>

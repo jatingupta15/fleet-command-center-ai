@@ -10,11 +10,23 @@ import { SOSManagement } from '@/components/SOSManagement';
 import { RideRequestManagement } from '@/components/RideRequestManagement';
 import { Analytics } from '@/components/Analytics';
 import { AdminSettings } from '@/components/AdminSettings';
+import { NotificationPage } from '@/components/NotificationPage';
+import { AdminProfile } from '@/components/AdminProfile';
 import { Header } from '@/components/Header';
 
 const Index = () => {
   const [activeView, setActiveView] = useState('dashboard');
   const [sosAlerts, setSosAlerts] = useState(2); // Mock SOS alert count
+
+  // Check URL hash for navigation
+  React.useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash === 'notifications') {
+      setActiveView('notifications');
+    } else if (hash === 'profile') {
+      setActiveView('profile');
+    }
+  }, []);
 
   const renderActiveView = () => {
     switch (activeView) {
@@ -34,6 +46,10 @@ const Index = () => {
         return <Analytics />;
       case 'settings':
         return <AdminSettings />;
+      case 'notifications':
+        return <NotificationPage />;
+      case 'profile':
+        return <AdminProfile />;
       default:
         return <DashboardOverview />;
     }
