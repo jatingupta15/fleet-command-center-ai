@@ -182,10 +182,6 @@ export const ClientDetailView = () => {
                   {client.officeLocation}
                 </p>
               </div>
-              <div>
-                <Label className="text-sm font-medium text-muted-foreground">Billing Cycle</Label>
-                <p className="text-lg">{client.billingCycle}</p>
-              </div>
             </CardContent>
           </Card>
 
@@ -239,10 +235,6 @@ export const ClientDetailView = () => {
               <div>
                 <Label className="text-sm font-medium text-muted-foreground">Rides This Month</Label>
                 <p className="text-lg">{client.ridesThisMonth.toLocaleString()}</p>
-              </div>
-              <div>
-                <Label className="text-sm font-medium text-muted-foreground">Fleets Engaged</Label>
-                <p className="text-lg">{client.fleetsEngaged}</p>
               </div>
               <div>
                 <Label className="text-sm font-medium text-muted-foreground">Active Fleets (Ongoing Rides)</Label>
