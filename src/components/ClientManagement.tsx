@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,8 +21,8 @@ import {
 } from 'lucide-react';
 
 export const ClientManagement = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedClient, setSelectedClient] = useState<any>(null);
   const [deactivateReason, setDeactivateReason] = useState('');
 
   const clients = [
@@ -188,56 +188,13 @@ export const ClientManagement = () => {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end space-x-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="ghost" size="sm" onClick={() => setSelectedClient(client)}>
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
-                          <DialogHeader>
-                            <DialogTitle>Client Details - {selectedClient?.name}</DialogTitle>
-                          </DialogHeader>
-                          {selectedClient && (
-                            <div className="grid grid-cols-2 gap-4 py-4">
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Client Name</p>
-                                <p className="text-lg">{selectedClient.name}</p>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Support Manager</p>
-                                <p className="text-lg">{selectedClient.supportManager}</p>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Fleet Size</p>
-                                <p className="text-lg">{selectedClient.fleetSize}</p>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Active Users</p>
-                                <p className="text-lg">{selectedClient.activeUsers.toLocaleString()}</p>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Billing Cycle</p>
-                                <p className="text-lg">{selectedClient.billingCycle}</p>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Status</p>
-                                <Badge variant={selectedClient.status === 'Active' ? 'default' : 'secondary'}>
-                                  {selectedClient.status}
-                                </Badge>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Rides This Month</p>
-                                <p className="text-lg">{selectedClient.ridesThisMonth.toLocaleString()}</p>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-600">Monthly Revenue</p>
-                                <p className="text-lg text-green-600 font-semibold">{selectedClient.revenue}</p>
-                              </div>
-                            </div>
-                          )}
-                        </DialogContent>
-                      </Dialog>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => navigate(`/client/${client.id}`)}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
 
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -275,7 +232,7 @@ export const ClientManagement = () => {
                                 <AlertDialogAction
                                   onClick={() => handleDeactivate(client)}
                                   disabled={!deactivateReason.trim()}
-                                  className="bg-red-600 hover:bg-red-700"
+                                  className="bg-destructive hover:bg-destructive/90"
                                 >
                                   Deactivate
                                 </AlertDialogAction>
