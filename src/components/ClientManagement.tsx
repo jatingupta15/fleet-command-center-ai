@@ -39,7 +39,6 @@ export const ClientManagement = () => {
       billingCycle: 'Monthly',
       status: 'Active',
       ridesThisMonth: 1250,
-      revenue: '₹3,45,000',
       supportManager: 'Rahul Verma',
       supportManagerEmail: 'rahul.verma@company.com',
       supportManagerPhone: '+91 98765 43210',
@@ -56,7 +55,6 @@ export const ClientManagement = () => {
       billingCycle: 'Quarterly',
       status: 'Active',
       ridesThisMonth: 890,
-      revenue: '₹2,34,000',
       supportManager: 'Priya Sharma',
       supportManagerEmail: 'priya.sharma@company.com',
       supportManagerPhone: '+91 98765 43211',
@@ -73,7 +71,6 @@ export const ClientManagement = () => {
       billingCycle: 'Monthly',
       status: 'Active',
       ridesThisMonth: 1450,
-      revenue: '₹4,12,000',
       supportManager: 'Amit Singh',
       supportManagerEmail: 'amit.singh@company.com',
       supportManagerPhone: '+91 98765 43212',
@@ -90,7 +87,6 @@ export const ClientManagement = () => {
       billingCycle: 'Monthly',
       status: 'Pending',
       ridesThisMonth: 580,
-      revenue: '₹1,65,000',
       supportManager: 'Neha Gupta',
       supportManagerEmail: 'neha.gupta@company.com',
       supportManagerPhone: '+91 98765 43213',
@@ -189,8 +185,8 @@ export const ClientManagement = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                <p className="text-2xl font-bold text-gray-900">₹11.56L</p>
+                <p className="text-sm font-medium text-gray-600">Total Rides</p>
+                <p className="text-2xl font-bold text-gray-900">4,170</p>
               </div>
               <FileText className="h-8 w-8 text-orange-600" />
             </div>
@@ -240,7 +236,6 @@ export const ClientManagement = () => {
                 <TableHead>Support Manager</TableHead>
                 <TableHead>Active Users</TableHead>
                 <TableHead>Rides This Month</TableHead>
-                <TableHead>Revenue</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -254,7 +249,6 @@ export const ClientManagement = () => {
                   <TableCell>{client.supportManager}</TableCell>
                   <TableCell>{client.activeUsers.toLocaleString()}</TableCell>
                   <TableCell>{client.ridesThisMonth.toLocaleString()}</TableCell>
-                  <TableCell className="text-green-600 font-semibold">{client.revenue}</TableCell>
                   <TableCell>
                     <Badge variant={client.status === 'Active' ? 'default' : 'secondary'}>
                       {client.status}

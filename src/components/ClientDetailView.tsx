@@ -33,7 +33,6 @@ export const ClientDetailView = () => {
     billingCycle: 'Monthly',
     ridesThisMonth: 1250,
     serviceStatus: 'Active',
-    revenue: '₹3,45,000',
     fleetsEngaged: 125,
     activeFleets: 42,
     contractStartDate: '2023-01-15',
@@ -219,26 +218,26 @@ export const ClientDetailView = () => {
             </CardContent>
           </Card>
 
-          {/* Fleet & Revenue */}
+          {/* Fleet & Service Metrics */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <CreditCard className="h-5 w-5 mr-2" />
-                Business Metrics
+                <Users className="h-5 w-5 mr-2" />
+                Service Metrics
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Monthly Revenue</Label>
-                <p className="text-2xl font-bold text-green-600">{client.revenue}</p>
+                <Label className="text-sm font-medium text-muted-foreground">Rides This Month</Label>
+                <p className="text-2xl font-bold text-blue-600">{client.ridesThisMonth.toLocaleString()}</p>
               </div>
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Rides This Month</Label>
-                <p className="text-lg">{client.ridesThisMonth.toLocaleString()}</p>
+                <Label className="text-sm font-medium text-muted-foreground">Fleets Engaged</Label>
+                <p className="text-lg">{client.fleetsEngaged}</p>
               </div>
               <div>
                 <Label className="text-sm font-medium text-muted-foreground">Active Fleets (Ongoing Rides)</Label>
-                <p className="text-lg font-semibold text-blue-600">{client.activeFleets}</p>
+                <p className="text-lg font-semibold text-green-600">{client.activeFleets}</p>
               </div>
             </CardContent>
           </Card>
